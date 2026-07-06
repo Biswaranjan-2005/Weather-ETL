@@ -1,160 +1,234 @@
-# 🌦️ Weather ETL Pipeline using Apache Airflow
+<div align="center">
 
-An end-to-end ETL (Extract, Transform, Load) pipeline built with **Apache Airflow** that automatically fetches real-time weather data from the **OpenWeather API**, transforms the data into a structured format, and stores it in **PostgreSQL** for analysis and reporting.
+# 🌦️ Weather ETL Pipeline
 
----
+### End-to-End Data Engineering Project using Apache Airflow, PostgreSQL & OpenWeather API
 
-## 📌 Project Overview
+<p align="center">
 
-This project demonstrates how to build a production-style ETL pipeline using Apache Airflow.
+![Python](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python)
 
-The pipeline performs the following operations every day:
+![Apache Airflow](https://img.shields.io/badge/Apache-Airflow-red?style=for-the-badge&logo=apache-airflow)
 
-- 🌐 Extracts live weather data from the OpenWeather API
-- 🔄 Transforms the JSON response into a structured format
-- 🗄️ Loads the processed data into a PostgreSQL database
-- ⏰ Automates the workflow using Apache Airflow DAGs
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue?style=for-the-badge&logo=postgresql)
 
----
+![Docker](https://img.shields.io/badge/Docker-Container-blue?style=for-the-badge&logo=docker)
 
-## 🚀 Features
+![REST API](https://img.shields.io/badge/REST-API-success?style=for-the-badge)
 
-- Automated daily ETL workflow
-- Apache Airflow TaskFlow API
-- REST API integration using HttpHook
-- PostgreSQL integration using PostgresHook
-- Modular Extract → Transform → Load architecture
-- Error handling through Airflow task monitoring
-- Easy to extend for multiple cities
+</p>
+
+A production-style ETL pipeline that automatically extracts real-time weather data from the **OpenWeather API**, transforms it into a structured format, and loads it into **PostgreSQL** using **Apache Airflow**.
+
+</div>
 
 ---
 
-## 🛠️ Tech Stack
+# 📖 Overview
+
+This project demonstrates how to build an automated **ETL (Extract, Transform, Load)** pipeline using **Apache Airflow**.
+
+The pipeline periodically retrieves live weather information from the OpenWeather API, cleans and transforms the data, and stores it in a PostgreSQL database for reporting and analysis.
+
+The project showcases industry-standard Data Engineering practices including workflow orchestration, API integration, data transformation, and automated scheduling.
+
+---
+
+# 🎯 Project Objectives
+
+- Automate weather data collection
+- Build a production-ready ETL workflow
+- Schedule pipelines using Apache Airflow
+- Store structured data in PostgreSQL
+- Demonstrate modern Data Engineering concepts
+
+---
+
+# ✨ Features
+
+✅ Automated ETL Pipeline
+
+✅ Apache Airflow DAG
+
+✅ OpenWeather REST API Integration
+
+✅ Data Cleaning & Transformation
+
+✅ PostgreSQL Data Storage
+
+✅ Workflow Scheduling
+
+✅ Error Handling
+
+✅ Docker Support
+
+✅ Modular Project Structure
+
+---
+
+# 🚀 Tech Stack
 
 | Technology | Purpose |
-|------------|---------|
+|------------|----------|
 | Python | Programming Language |
 | Apache Airflow | Workflow Orchestration |
-| PostgreSQL | Data Storage |
+| PostgreSQL | Database |
 | OpenWeather API | Weather Data Source |
 | Docker | Containerization |
-| SQL | Database Operations |
+| SQL | Data Storage |
 
 ---
 
-## 📂 Project Structure
+# 📂 Project Structure
 
 ```
 weather-etl-pipeline/
 │
 ├── dags/
-│   └── etl_weather.py
+│     └── etl_weather.py
 │
-├── screenshots/
+├── plugins/
+│
+├── logs/
 │
 ├── requirements.txt
 │
-├── README.md
+├── docker-compose.yaml
 │
-└── docker-compose.yaml
+├── .env
+│
+└── README.md
 ```
 
 ---
 
-## ⚙️ ETL Workflow
+# 🏗️ System Architecture
 
-### 1️⃣ Extract
-
-- Connects to the OpenWeather API using Airflow's HttpHook.
-- Retrieves real-time weather data for the configured location.
-
-Example API Response:
-
-```json
-{
-    "temp": 22.6,
-    "humidity": 71,
-    "pressure": 1014,
-    "weather": "clear sky",
-    "wind_speed": 4.1
-}
+```
+          OpenWeather API
+                 │
+                 ▼
+         Extract Weather Data
+                 │
+                 ▼
+      Data Cleaning & Transformation
+                 │
+                 ▼
+        Apache Airflow Scheduler
+                 │
+                 ▼
+        PostgreSQL Database
+                 │
+                 ▼
+        Analytics & Reporting
 ```
 
 ---
 
-### 2️⃣ Transform
+# 🔄 ETL Workflow
 
-The extracted JSON data is converted into a clean structure containing:
+## 1️⃣ Extract
+
+The pipeline retrieves live weather information using the OpenWeather REST API.
+
+Collected information includes:
 
 - Temperature
 - Humidity
 - Pressure
-- Weather Description
 - Wind Speed
+- Weather Description
 - Timestamp
+- City Name
 
 ---
 
-### 3️⃣ Load
+## 2️⃣ Transform
 
-The transformed data is inserted into PostgreSQL using Airflow's PostgresHook.
+The extracted JSON response is processed to:
 
-Example SQL:
-
-```sql
-INSERT INTO weather_data
-(
-temperature,
-humidity,
-pressure,
-weather_description,
-wind_speed,
-timestamp
-)
-VALUES (...);
-```
+- Remove unnecessary fields
+- Convert timestamps
+- Normalize values
+- Handle missing data
+- Prepare records for database insertion
 
 ---
 
-## 📊 Workflow Diagram
+## 3️⃣ Load
+
+The transformed weather data is inserted into a PostgreSQL database using Airflow's PostgreSQL Hook.
+
+---
+
+# 📊 Data Flow
 
 ```
 OpenWeather API
-        │
-        ▼
-  Extract Task
-        │
-        ▼
- Transform Task
-        │
-        ▼
-    Load Task
-        │
-        ▼
- PostgreSQL Database
+
+↓
+
+HTTP Request
+
+↓
+
+JSON Response
+
+↓
+
+Python Transformation
+
+↓
+
+Airflow DAG
+
+↓
+
+PostgreSQL
+
+↓
+
+Dashboard / Analytics
 ```
 
 ---
 
-## 🗄️ Database Schema
+# 🗄️ Database Schema
 
-```sql
-CREATE TABLE weather_data (
-    id SERIAL PRIMARY KEY,
-    temperature FLOAT,
-    humidity INT,
-    pressure INT,
-    weather_description VARCHAR(255),
-    wind_speed FLOAT,
-    timestamp TIMESTAMP
-);
-```
+| Column | Type |
+|----------|----------|
+| id | Integer |
+| city | VARCHAR |
+| temperature | FLOAT |
+| humidity | INTEGER |
+| pressure | INTEGER |
+| wind_speed | FLOAT |
+| weather_description | VARCHAR |
+| timestamp | TIMESTAMP |
 
 ---
 
-## ▶️ Running the Project
+# 📅 Airflow DAG
 
-### Clone the repository
+```
+Extract Weather Data
+
+↓
+
+Transform Weather Data
+
+↓
+
+Load into PostgreSQL
+```
+
+Each task is monitored independently, allowing retries and failure recovery.
+
+---
+
+# ⚙️ Installation
+
+## Clone Repository
 
 ```bash
 git clone https://github.com/yourusername/weather-etl-pipeline.git
@@ -162,7 +236,7 @@ git clone https://github.com/yourusername/weather-etl-pipeline.git
 
 ---
 
-### Navigate into the project
+## Navigate
 
 ```bash
 cd weather-etl-pipeline
@@ -170,7 +244,7 @@ cd weather-etl-pipeline
 
 ---
 
-### Install dependencies
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -178,7 +252,7 @@ pip install -r requirements.txt
 
 ---
 
-### Start Airflow
+## Start Docker
 
 ```bash
 docker-compose up
@@ -186,99 +260,176 @@ docker-compose up
 
 ---
 
-### Open Airflow UI
+## Start Airflow
+
+```bash
+airflow standalone
+```
+
+---
+
+## Access Airflow
 
 ```
 http://localhost:8080
 ```
 
-Default credentials:
+---
 
+# 🚀 Running the Pipeline
+
+Start the scheduler
+
+```bash
+airflow scheduler
 ```
-Username: airflow
-Password: airflow
+
+Start the webserver
+
+```bash
+airflow webserver
+```
+
+Trigger the DAG manually or let it execute automatically according to the schedule.
+
+---
+
+# 📷 Sample Weather Record
+
+```json
+{
+    "city": "Bhubaneswar",
+    "temperature": 31.8,
+    "humidity": 73,
+    "pressure": 1008,
+    "wind_speed": 3.2,
+    "weather": "Clear Sky",
+    "timestamp": "2026-07-05 10:30:00"
+}
 ```
 
 ---
 
-## 📈 Airflow DAG
+# 📈 Skills Demonstrated
 
-```
-Extract
-   │
-   ▼
-Transform
-   │
-   ▼
-Load
-```
-
-The DAG is scheduled to run **daily** and automatically stores the latest weather information.
-
----
-
-## 📸 Screenshots
-
-You can add screenshots here:
-
-- Airflow DAG Graph
-- Airflow Tree View
-- PostgreSQL Table
-- Successful DAG Run
-
----
-
-## 🔮 Future Improvements
-
-- Support multiple cities
-- Weather forecasting
-- AWS S3 integration
-- Data visualization using Power BI/Tableau
-- Email alerts on ETL failure
-- Docker Compose deployment
-- CI/CD with GitHub Actions
-- Data validation using Great Expectations
-
----
-
-## 📚 Learning Outcomes
-
-This project helped me understand:
-
+- Data Engineering
 - ETL Pipeline Development
-- Apache Airflow DAGs
-- Airflow Hooks
-- TaskFlow API
+- Apache Airflow
 - REST API Integration
 - PostgreSQL
-- Workflow Scheduling
+- SQL
 - Docker
-- SQL Data Loading
+- Python
+- Workflow Automation
+- Data Transformation
+- Task Scheduling
+- Production Pipeline Design
 
 ---
 
-## 🤝 Contributing
+# 📚 Learning Outcomes
+
+Through this project, I gained practical experience in:
+
+- Designing ETL Pipelines
+- Apache Airflow DAG Development
+- Task Dependencies
+- Airflow Hooks
+- Scheduling Workflows
+- API Data Extraction
+- PostgreSQL Integration
+- Dockerized Development
+- Error Handling
+- Data Validation
+
+---
+
+# 🚀 Future Enhancements
+
+- AWS S3 Data Storage
+- Apache Spark Integration
+- PySpark Data Processing
+- Kafka Streaming
+- Weather Forecast ETL
+- Multiple City Support
+- Email Alerts on DAG Failure
+- Power BI Dashboard
+- Tableau Dashboard
+- Data Quality Checks
+- CI/CD Pipeline
+- Kubernetes Deployment
+- Cloud Deployment (AWS/GCP/Azure)
+
+---
+
+# 📊 Pipeline Monitoring
+
+Apache Airflow provides:
+
+- DAG Visualization
+- Task Status Tracking
+- Retry Mechanism
+- Execution History
+- Logging
+- Error Monitoring
+
+---
+
+# 💡 Use Cases
+
+- Weather Analytics
+- Climate Monitoring
+- Agriculture
+- Smart Cities
+- Environmental Research
+- IoT Applications
+- Data Warehousing
+- Business Intelligence
+
+---
+
+# 🤝 Contributing
 
 Contributions are welcome!
 
-Feel free to fork this repository and submit a pull request.
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to your branch
+5. Open a Pull Request
 
 ---
 
-## 📄 License
+# 📄 License
 
 This project is licensed under the MIT License.
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
-**Biswaranjan Chakra**
+## Biswaranjan Chakra
 
-- 💼 Aspiring Data Engineer
-- 🐍 Python Developer
-- 📊 SQL & PostgreSQL
-- ⚙️ Apache Airflow
-- 🚀 ETL Pipeline Developer
+**Aspiring Data Engineer | Python Developer | Machine Learning Enthusiast**
 
-If you found this project helpful, don't forget to ⭐ star the repository!
+### Skills
+
+- Python
+- SQL
+- PostgreSQL
+- Apache Airflow
+- PySpark
+- Docker
+- ETL Development
+- Machine Learning
+- Data Engineering
+
+---
+
+<div align="center">
+
+### ⭐ If you found this project useful, please consider giving it a Star!
+
+**Building Scalable Data Pipelines, One Workflow at a Time. 🚀**
+
+</div>
